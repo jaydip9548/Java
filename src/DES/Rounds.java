@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Rounds {
+    static String EncryptedData = "";
     static String[][] Sbox = {
             {"63", "7C", "77", "7B", "F2", "6B", "6F", "C5", "30", "01", "67", "2B", "FE", "D7", "AB", "76"},
             {"CA", "82", "C9", "7D", "FA", "59", "47", "F0", "AD", "D4", "A2", "AF", "9C", "A4", "72", "C0"},
@@ -30,10 +31,10 @@ public class Rounds {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
         String key = "Thats my Kung Fu";
-        String plainText = "Two One Nine Two";
-
         KeyGenerator k = new KeyGenerator(key);
+
         Map<Integer, List<String>> keys = k.mainFunction();
+        String plainText = "Two One Nine TwoOOP";
 
 //        for(int i=0; i<11;i++){
 //            String s = "";
@@ -52,13 +53,19 @@ public class Rounds {
 
         plainText = DatatypeConverter.printHexBinary(myBytes);
 
-        System.out.println(plainText + "  " + plainText.length());
+        while (plainText.length() % 32 != 0) {
+            plainText = "0" + plainText;
+        }
 
-        doEncryption(plainText, keys);
+        System.out.println(plainText + "    " + plainText.length());
+        String temp = "";
+        for (int i = 0; i < plainText.length(); i += 32) {
+            temp = plainText.substring(i, i + 32);
+
+            doEncryption(temp, keys);
+        }
 
 //        Send It to Client Side
-
-
 
 
     }
@@ -77,8 +84,8 @@ public class Rounds {
 
         List<String> afR = new ArrayList<>();
 
-        System.out.println("Key : " + keyR);
-        System.out.println("Text : " + plainText);
+//        System.out.println("Key : " + keyR);
+//        System.out.println("Text : " + plainText);
 
         for (int i = 0; i < keyR.size(); i++) {
             int result = Integer.parseInt(ptR.get(i), 16) ^ Integer.parseInt(keyR.get(i), 16);
@@ -93,9 +100,11 @@ public class Rounds {
 //        Round Operations
         System.out.println(keys.size());
         for (int i = 1; i < keys.size(); i++) {
-            if(i==10){
+            if (i == 10) {
                 afR = subBytes(afR);
+//                System.out.println("Before Shifting : " + afR);
                 String nowMix[][] = shiftRows(afR);
+//                System.out.println("After shifting : " + Arrays.deepToString(nowMix));
                 afR.clear();
 
                 for (int j = 0; j < 4; j++) {
@@ -105,9 +114,13 @@ public class Rounds {
                 }
 
 
-            }else{
+            } else {
                 afR = subBytes(afR);
+//                System.out.println("Before Shifting : " + afR);
+
                 String nowMix[][] = shiftRows(afR);
+//                System.out.println("After shifting : " + Arrays.deepToString(nowMix));
+
                 nowMix = mixColumn(nowMix);
                 afR.clear();
                 for (int j = 0; j < 4; j++) {
@@ -119,7 +132,7 @@ public class Rounds {
 
             keyR = keys.get(i);
 
-           List<String> repeatedafR = new ArrayList<>();
+            List<String> repeatedafR = new ArrayList<>();
 
             for (int p = 0; p < afR.size(); p++) {
                 int result = Integer.parseInt(keyR.get(p), 16) ^ Integer.parseInt(afR.get(p), 16);
@@ -131,7 +144,7 @@ public class Rounds {
             }
             afR = repeatedafR;
 
-            System.out.println("Round "+i+" "+repeatedafR);
+            System.out.println("Round " + 10 + " " + repeatedafR);
 
         }
 
