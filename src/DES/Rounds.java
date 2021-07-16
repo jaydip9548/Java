@@ -27,7 +27,7 @@ public class Rounds {
             {"e1", "f8", "98", "11", "69", "d9", "8e", "94", "9b", "1e", "87", "e9", "ce", "55", "28", "df"},
             {"8c", "a1", "89", "0d", "bf", "e6", "42", "68", "41", "99", "2d", "0f", "b0", "54", "bb", "16"}
     };
-
+// [52, AA, 7C, 33, D0, 1D, 91, DD, 4B, 44, AC, F4, 5D, 1F, 00, D0, D7, 95, 20, 0F, 40, BC, 8B, 21, A6, 7A, 9A, 2C, 1A, 24, B7, C1]
 
     public static void main(String[] args) throws UnsupportedEncodingException {
         String key = "Thats my Kung Fu";
